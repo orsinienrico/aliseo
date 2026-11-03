@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#7C4DFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aliseo">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Aliseo — Studio con Lorenzo</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<style>
+:root{
+  --bg:#F6F6FE; --card:#FFFFFF; --ink:#191B33; --ink-2:#5B6075; --ink-3:#9499AD;
+  --line:#E8E9F6; --accent:#6C5CE7; --accent-l:#F0EDFF; --accent-d:#5443D8;
+  --grad: linear-gradient(135deg, #7C4DFF 0%, #6C5CE7 45%, #448AFF 100%);
+  --grad-warm: linear-gradient(135deg, #FF8A5C 0%, #FF6B9D 100%);
+  --green:#2FB380; --green-l:#E7F8F0; --amber:#E0A52C; --amber-l:#FCF2DD;
+  --red:#E25757; --red-l:#FDECEC; --gold:#D6A024;
+  --r:18px; --r-sm:12px; --r-lg:26px;
+  --sh: 0 2px 10px rgba(60,50,140,.07), 0 1px 2px rgba(60,50,140,.05);
+  --sh-lg: 0 10px 30px rgba(60,50,140,.16);
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;
+  min-height:100vh; padding-bottom:84px;
+}
+button{font-family:inherit; cursor:pointer;}
+input,textarea,select{font-family:inherit;}
+.hidden{display:none !important;}
+a{color:inherit;}
+
+/* Topbar */
+.topbar{
+  position:sticky; top:0; z-index:40; background:rgba(247,248,252,.92); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  padding:14px 18px 10px; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:18px; min-width:0;}
+.brand .logo{font-size:22px;}
+.brand #brandName{white-space:nowrap;}
+.brand .brand-owner{white-space:nowrap; color:var(--ink-3); font-weight:600;}
+@media (max-width:520px){
+  .brand .brand-owner{display:none;} /* su mobile solo "Aliseo": il nome intero non ci sta */
+  .streak-chip{font-size:11.5px; padding:5px 9px;}
+  .xp-chip{font-size:11.5px; padding:5px 9px;}
+}
+.streak-chip{
+  display:flex; align-items:center; gap:6px; background:var(--amber-l); color:var(--amber);
+  padding:6px 12px; border-radius:999px; font-weight:700; font-size:13px;
+}
+.topbar-actions{display:flex; gap:8px;}
+.icon-btn{
+  width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:var(--card);
+  display:flex; align-items:center; justify-content:center; font-size:17px; box-shadow:var(--sh);
+}
+
+main{max-width:720px; margin:0 auto; padding:16px 16px 24px;}
+.screen{animation:fadeIn .25s var(--ease);}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+h1.page-title{font-size:22px; margin:4px 0 16px; font-weight:800;}
+.subtitle{color:var(--ink-2); font-size:14px; margin:-10px 0 18px;}
+
+.card{
+  background:var(--card); border-radius:var(--r); padding:16px; box-shadow:var(--sh);
+  border:1px solid var(--line); margin-bottom:14px;
+}
+.card-row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+.card h3{margin:0 0 4px; font-size:16px;}
+.card p{margin:0; color:var(--ink-2); font-size:13px;}
+
+.btn{
+  border:none; border-radius:var(--r-sm); padding:11px 18px; font-weight:700; font-size:14px;
+  background:var(--accent); color:#fff; box-shadow:0 4px 14px rgba(91,110,245,.3);
+  transition:transform .15s var(--ease), box-shadow .15s var(--ease);
+}
+.btn:active{transform:scale(.97);}
+.btn.secondary{background:var(--accent-l); color:var(--accent-d); box-shadow:none;}
+.btn.ghost{background:transparent; color:var(--ink-2); box-shadow:none; border:1px solid var(--line);}
+.btn.danger{background:var(--red); box-shadow:0 4px 14px rgba(226,87,87,.3);}
+.btn.block{width:100%;}
+.btn.sm{padding:7px 12px; font-size:12.5px; border-radius:10px;}
+.btn:disabled{opacity:.5; pointer-events:none;}
+
+.tag{display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:700;}
+.tag.green{background:var(--green-l); color:var(--green);}
+.tag.amber{background:var(--amber-l); color:var(--amber);}
+.tag.red{background:var(--red-l); color:var(--red);}
+.tag.grey{background:#EEF0F5; color:var(--ink-3);}
+.tag.accent{background:var(--accent-l); color:var(--accent-d);}
+
+.field{margin-bottom:14px;}
+.field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-2); margin-bottom:6px;}
+.field input, .field textarea, .field select{
+  width:100%; padding:11px 13px; border-radius:12px; border:1.5px solid var(--line);
+  background:var(--card); font-size:16px; color:var(--ink);
+  /* 16px: sotto questa soglia Chrome Android zooma al focus */
+}
+.field textarea{resize:vertical; min-height:80px;}
+.field input:focus, .field textarea:focus, .field select:focus{outline:none; border-color:var(--accent);}
+.hint{font-size:11.5px; color:var(--ink-3); margin-top:5px;}
+
+.empty{text-align:center; padding:40px 20px; color:var(--ink-3);}
+.empty .emoji{font-size:40px; display:block; margin-bottom:10px;}
+.empty .title{font-weight:700; color:var(--ink-2); margin-bottom:4px;}
+
+.progress-bar{height:8px; background:#EEF0F5; border-radius:99px; overflow:hidden;}
+.progress-bar > div{height:100%; background:var(--accent); border-radius:99px; transition:width .4s var(--ease);}
+
+/* Bottom nav */
+.tabbar{
+  position:fixed; bottom:0; left:0; right:0; z-index:50;
+  background:rgba(255,255,255,.95); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-top:1px solid var(--line);
+  display:flex; padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+}
+.tab-btn{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 2px;
+  background:none; border:none; color:var(--ink-3); font-size:10.5px; font-weight:700; border-radius:10px;
+}
+.tab-btn .ic{font-size:19px;}
+.tab-btn.active{color:var(--accent);}
+.tab-btn.active .ic{transform:translateY(-1px);}
+
+/* Lezioni list */
+.lezione-card{display:flex; gap:12px; align-items:flex-start;}
+.lezione-card .thumb{
+  width:52px; height:52px; border-radius:12px; background:var(--accent-l); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:22px; overflow:hidden;
+}
+.lezione-card .thumb img{width:100%; height:100%; object-fit:cover;}
+.lezione-meta{display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;}
+
+/* Upload zone */
+.upload-zone{
+  border:2px dashed var(--line); border-radius:var(--r); padding:30px 16px; text-align:center;
+  color:var(--ink-3); background:var(--card); margin-bottom:14px;
+}
+.upload-zone .emoji{font-size:32px;}
+.thumbs-row{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0;}
+.thumbs-row img{width:64px; height:64px; object-fit:cover; border-radius:10px; border:1px solid var(--line);}
+
+/* Mappa concettuale */
+.mappa-node{border-radius:14px; border:1.5px solid var(--line); margin:8px 0; overflow:hidden; background:var(--card);}
+.mappa-node > .head{padding:12px 14px; display:flex; align-items:center; justify-content:space-between; font-weight:700; cursor:pointer;}
+.mappa-node > .body{padding:0 14px 12px; display:none;}
+.mappa-node.open > .body{display:block;}
+.mappa-node .sub{margin-left:14px; border-left:2px solid var(--accent-l); padding-left:12px;}
+.mappa-node .leaf{padding:7px 0; font-size:13.5px; color:var(--ink-2); display:flex; gap:8px;}
+.mappa-node .leaf::before{content:"•"; color:var(--accent);}
+
+/* Quiz */
+.quiz-opt{
+  display:block; width:100%; text-align:left; padding:13px 14px; border-radius:14px; border:1.5px solid var(--line);
+  background:var(--card); margin-bottom:9px; font-size:14px; font-weight:600;
+}
+.quiz-opt.selected{border-color:var(--accent); background:var(--accent-l);}
+.quiz-opt.correct{border-color:var(--green); background:var(--green-l); color:var(--green);}
+.quiz-opt.wrong{border-color:var(--red); background:var(--red-l); color:var(--red);}
+.score-ring{
+  width:110px; height:110px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  margin:0 auto 10px; font-size:28px; font-weight:800; position:relative;
+}
+
+/* Chat Prof */
+.chat-wrap{display:flex; flex-direction:column; gap:10px; margin-bottom:12px;}
+.msg{max-width:84%; padding:11px 14px; border-radius:16px; font-size:14px; line-height:1.45;}
+.msg.user{align-self:flex-end; background:var(--accent); color:#fff; border-bottom-right-radius:5px;}
+.msg.prof{align-self:flex-start; background:var(--card); border:1px solid var(--line); border-bottom-left-radius:5px;}
+.chat-input-row{display:flex; gap:8px; position:sticky; bottom:76px; background:var(--bg); padding:8px 0;}
+.chat-input-row textarea{flex:1; min-height:44px; max-height:120px; font-size:16px;}
+
+/* Audio */
+.rec-btn{
+  width:84px; height:84px; border-radius:50%; background:var(--red); color:#fff; border:none;
+  font-size:30px; display:flex; align-items:center; justify-content:center; margin:0 auto;
+  box-shadow:0 8px 24px rgba(226,87,87,.35);
+}
+.rec-btn.recording{animation:pulse 1.2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,87,87,.5);} 70%{box-shadow:0 0 0 18px rgba(226,87,87,0);} 100%{box-shadow:0 0 0 0 rgba(226,87,87,0);}}
+.audio-item{display:flex; align-items:center; gap:10px;}
+.audio-item audio{flex:1; height:36px;}
+
+/* Overlay / modal */
+.overlay{
+  position:fixed; inset:0; background:rgba(20,24,50,.45); z-index:100;
+  display:flex; align-items:flex-end; justify-content:center;
+}
+.overlay.center{align-items:center; padding:20px;}
+.sheet{
+  background:var(--card); border-radius:22px 22px 0 0; padding:20px 18px calc(20px + env(safe-area-inset-bottom));
+  width:100%; max-width:720px; max-height:88vh; overflow-y:auto; animation:slideUp .25s var(--ease);
+}
+.overlay.center .sheet{border-radius:22px; max-width:400px;}
+@keyframes slideUp{from{transform:translateY(40px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+.sheet-handle{width:40px; height:4px; background:var(--line); border-radius:99px; margin:0 auto 14px;}
+.sheet-title{font-size:17px; font-weight:800; margin-bottom:14px;}
+
+.pin-dots{display:flex; gap:12px; justify-content:center; margin:18px 0;}
+.pin-dots span{width:14px; height:14px; border-radius:50%; border:2px solid var(--accent); background:transparent;}
+.pin-dots span.filled{background:var(--accent);}
+.pin-pad{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:260px; margin:0 auto;}
+.pin-pad button{padding:16px; border-radius:14px; border:1px solid var(--line); background:var(--card); font-size:20px; font-weight:700;}
+
+.loading-row{display:flex; align-items:center; gap:8px; color:var(--ink-3); font-size:13px; padding:10px 0;}
+.spinner{width:16px; height:16px; border:2.5px solid var(--accent-l); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.banner{border-radius:var(--r); padding:13px 15px; font-size:13.5px; font-weight:600; margin-bottom:14px; display:flex; gap:10px; align-items:flex-start;}
+.banner.red{background:var(--red-l); color:#C23D3D;}
+.banner.amber{background:var(--amber-l); color:#A87818;}
+.banner.green{background:var(--green-l); color:#1F8A62;}
+
+.toast{
+  position:fixed; bottom:96px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff;
+  padding:11px 20px; border-radius:99px; font-size:13.5px; font-weight:600; z-index:200; box-shadow:var(--sh-lg);
+  animation:toastIn .25s var(--ease);
+}
+@keyframes toastIn{from{opacity:0; transform:translate(-50%,10px);} to{opacity:1; transform:translate(-50%,0);}}
+
+.swipe-x{overflow-x:auto; display:flex; gap:8px; padding-bottom:4px;}
+.chip{padding:8px 14px; border-radius:99px; background:var(--card); border:1px solid var(--line); font-size:13px; font-weight:700; white-space:nowrap; color:var(--ink-2);}
+.chip.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+.section-hdr{display:flex; align-items:center; justify-content:between; margin:20px 0 10px;}
+.section-hdr h2{font-size:15px; margin:0; color:var(--ink-2); text-transform:uppercase; letter-spacing:.04em; font-weight:800;}
+
+/* Week strip */
+.week-strip{display:flex; gap:7px; margin-bottom:16px;}
+.day-pill{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px 2px 8px;
+  border-radius:14px; border:1.5px solid var(--line); background:var(--card); position:relative;
+}
+.day-pill .dow{font-size:10.5px; font-weight:700; color:var(--ink-3); text-transform:uppercase;}
+.day-pill .num{font-size:15px; font-weight:800; color:var(--ink);}
+.day-pill.today .num{color:var(--accent);}
+.day-pill.selected{background:var(--accent); border-color:var(--accent);}
+.day-pill.selected .dow, .day-pill.selected .num{color:#fff;}
+.day-pill .dots{display:flex; gap:3px; height:7px; margin-top:1px;}
+.day-pill .dots span{width:7px; height:7px; border-radius:50%; background:var(--accent);}
+.day-pill.selected .dots span{background:#fff;}
+.day-pill .dots span.busy{background:var(--red);}
+.day-pill.selected .dots span.busy{background:#fff; opacity:.7;}
+
+/* ===== GAMIFICATION / UX 2.0 ===== */
+
+/* Hero card su Oggi */
+.hero{
+  background:var(--grad); border-radius:var(--r-lg); color:#fff; padding:20px 18px 18px;
+  margin-bottom:16px; box-shadow:0 10px 26px rgba(108,92,231,.35); position:relative; overflow:hidden;
+}
+.hero::after{
+  content:""; position:absolute; width:160px; height:160px; border-radius:50%;
+  background:rgba(255,255,255,.12); top:-60px; right:-40px; pointer-events:none;
+}
+.hero .hi{font-size:23px; font-weight:800; letter-spacing:-.01em;}
+.hero .hi .wave{display:inline-block; animation:wave 2.2s ease-in-out infinite; transform-origin:70% 70%;}
+@keyframes wave{0%,60%,100%{transform:rotate(0);} 10%,30%{transform:rotate(14deg);} 20%,40%{transform:rotate(-8deg);}}
+.hero .what{font-size:14px; opacity:.92; margin-top:6px; line-height:1.45;}
+.hero .xp-line{display:flex; align-items:center; gap:10px; margin-top:14px;}
+.hero .lv-chip{
+  background:rgba(255,255,255,.2); border-radius:99px; padding:5px 12px;
+  font-size:12.5px; font-weight:800; white-space:nowrap; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+}
+.hero .xp-bar{flex:1; height:9px; background:rgba(255,255,255,.22); border-radius:99px; overflow:hidden;}
+.hero .xp-bar > div{height:100%; background:#fff; border-radius:99px; transition:width .5s var(--ease);}
+.hero .xp-next{font-size:11px; opacity:.85; margin-top:5px; text-align:right;}
+.hero .cta{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; margin-top:16px; border:none; border-radius:16px; padding:15px;
+  background:#fff; color:var(--accent-d); font-size:16px; font-weight:800;
+  box-shadow:0 6px 16px rgba(20,20,60,.18); transition:transform .15s var(--ease);
+}
+.hero .cta:active{transform:scale(.97);}
+.hero .cta.ghost2{
+  background:rgba(255,255,255,.16); color:#fff; font-size:14px; padding:11px;
+  box-shadow:none; margin-top:8px; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+}
+
+/* Missione del giorno */
+.mission{
+  display:flex; align-items:center; gap:12px; background:var(--card); border-radius:var(--r);
+  padding:13px 15px; border:1.5px solid var(--line); margin-bottom:14px; box-shadow:var(--sh);
+}
+.install-banner{
+  display:flex; align-items:center; gap:12px; background:var(--card); border-radius:var(--r);
+  padding:12px 14px; border:1.5px dashed var(--accent); margin-bottom:14px;
+}
+.install-banner .mi{font-size:22px;}
+.install-banner .mt{flex:1;}
+.install-banner .mt b{font-size:13.5px;}
+.mission .mi{font-size:24px;}
+.mission .mt{flex:1;}
+.mission .mt b{font-size:14px;}
+.mission .mt .hint{margin-top:2px;}
+.mission.done{border-color:var(--green); background:var(--green-l);}
+.mission .check{
+  width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:15px; font-weight:800; background:var(--accent-l); color:var(--accent-d); flex-shrink:0;
+}
+.mission.done .check{background:var(--green); color:#fff;}
+
+/* FAB scatto lezione */
+.fab{
+  position:fixed; right:16px; bottom:calc(76px + env(safe-area-inset-bottom)); z-index:60;
+  width:58px; height:58px; border-radius:50%; border:none; background:var(--grad);
+  color:#fff; font-size:24px; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 22px rgba(108,92,231,.45); transition:transform .15s var(--ease);
+}
+.fab:active{transform:scale(.92);}
+
+/* XP chip topbar */
+.xp-chip{
+  display:flex; align-items:center; gap:5px; background:var(--accent-l); color:var(--accent-d);
+  padding:6px 12px; border-radius:999px; font-weight:800; font-size:13px;
+}
+
+/* Level-up celebration */
+.levelup{text-align:center; position:relative; overflow:hidden;}
+.levelup .big{font-size:54px; display:block; margin:6px 0 4px; animation:pop .45s var(--ease);}
+@keyframes pop{0%{transform:scale(.4); opacity:0;} 70%{transform:scale(1.15);} 100%{transform:scale(1); opacity:1;}}
+.levelup h2{margin:0 0 6px; font-size:20px; font-weight:800;}
+.confetti{position:absolute; inset:0; pointer-events:none;}
+.confetti span{position:absolute; top:-14px; font-size:15px; animation:fall 2.4s linear infinite;}
+@keyframes fall{to{transform:translateY(420px) rotate(360deg); opacity:0;}}
+
+/* XP pill nei toast/feedback */
+.xp-gain{
+  display:inline-block; background:var(--accent-l); color:var(--accent-d);
+  padding:2px 9px; border-radius:99px; font-size:12px; font-weight:800; margin-left:6px;
+}
+
+/* Timer studio */
+.studio-clock{
+  font-size:56px; font-weight:800; letter-spacing:-.02em; color:var(--accent-d);
+  font-variant-numeric:tabular-nums; margin:6px 0 0;
+}
+
+/* Streak flame animato */
+.streak-chip .flame{display:inline-block;}
+.streak-chip.hot .flame{animation:flicker 1.4s ease-in-out infinite;}
+@keyframes flicker{0%,100%{transform:scale(1);} 50%{transform:scale(1.18) rotate(-4deg);}}
+
+/* Empty state più invitante */
+.empty .big-btn{margin-top:14px;}
+
+/* Barra vista Genitori attiva */
+.mode-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  background:var(--green-l); color:#1F8A62; padding:9px 14px; font-size:13px; font-weight:600;
+}
+.mode-bar .mode-exit{cursor:pointer; white-space:nowrap; text-decoration:underline;}
+
+/* Hero: cosa devi fare, inequivocabile */
+.hero .task{font-size:17.5px; font-weight:800; margin-top:10px; line-height:1.35; letter-spacing:-.01em;}
+.hero .info{font-size:13px; opacity:.92; margin-top:7px; line-height:1.55;}
+
+/* Legenda striscia settimana */
+.week-legend{display:flex; gap:14px; font-size:11px; color:var(--ink-3); font-weight:600; margin:-10px 0 14px; padding:0 2px;}
+.week-legend .lg{display:flex; align-items:center; gap:4px;}
+.week-legend .d1{width:7px; height:7px; border-radius:50%; background:var(--accent);}
+.week-legend .d2{width:7px; height:7px; border-radius:50%; background:var(--red);}
+
+/* Sheet: pulsante chiudi */
+.sheet-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.sheet-head .sheet-title{margin-bottom:0;}
+.sheet-x{
+  width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:var(--card);
+  font-size:15px; font-weight:700; color:var(--ink-2); cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+}
+.sheet-x:active{transform:scale(.92);}
+
+/* Sheet più compatto (mobile-first) */
+.sheet{padding:14px 16px calc(16px + env(safe-area-inset-bottom)); max-height:84vh;}
+.sheet-handle{margin:0 auto 10px;}
+.sheet-title{font-size:16px; margin-bottom:10px;}
+.sheet .field{margin-bottom:11px;}
+.sheet .btn.block{margin-top:4px;}
+
+/* Card "come funziona" (onboarding) */
+.how-card h3{margin:2px 0 10px;}
+.how-step{display:flex; align-items:center; gap:10px; padding:8px 0; font-size:14px; font-weight:600; color:var(--ink-2); border-bottom:1px solid var(--line);}
+.how-step:last-child{border-bottom:none;}
+.how-step span{font-size:16px;}
+
+/* Grafico settimanale vista Genitori */
+.wk-chart{display:flex; gap:8px; align-items:flex-end; height:96px; margin:14px 2px 6px;}
+.wk-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end;}
+.wk-bar{width:100%; max-width:34px; background:var(--grad); border-radius:7px 7px 3px 3px; min-height:4px; box-shadow:0 2px 8px rgba(108,92,231,.25);}
+.wk-lbl{font-size:10.5px; font-weight:700; color:var(--ink-3); text-transform:uppercase;}
+.wk-lbl.today{color:var(--accent);}
+.wk-min{font-size:10px; font-weight:700; color:var(--ink-2);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">💨</span><span id="brandName">Aliseo</span><span id="brandOwner" class="brand-owner"> — Lorenzo</span></div>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <div class="streak-chip" id="streakChip" title="Giorni di studio consecutivi"><span class="flame">🔥</span> <span id="streakCount">0</span> giorni</div>
+    <div class="xp-chip" id="xpChip" title="Punti esperienza: li guadagni studiando">⭐ <span id="xpCount">0</span> punti</div>
+    <div class="topbar-actions">
+      <button class="icon-btn" onclick="App.openSettings()" title="Impostazioni">⚙️</button>
+    </div>
+  </div>
+</div>
+
+<div id="modeBar"></div>
+
+<main id="main"></main>
+
+<button class="fab" id="fab" onclick="Screens.uploadModal()" title="Nuova lezione">📷</button>
+
+<div class="tabbar" id="tabbar">
+  <button class="tab-btn" data-tab="oggi"><span class="ic">🏠</span>Oggi</button>
+  <button class="tab-btn" data-tab="lezioni"><span class="ic">📷</span>Lezioni</button>
+  <button class="tab-btn" data-tab="esercizi"><span class="ic">✏️</span>Esercizi</button>
+  <button class="tab-btn" data-tab="ricerca"><span class="ic">🎓</span>Prof</button>
+  <button class="tab-btn" data-tab="genitori"><span class="ic">👪</span>Genitori</button>
+</div>
+
+<div id="toastHost"></div>
+<div id="overlayHost"></div>
+
+<script>
+/* =========================================================
+   LORY — Study Organizer PWA
+   Single-file app. Storage: localStorage namespace lory_*
+   ========================================================= */
+const APP_VERSION = '1.4.3';
+
+/* ---------- Storage ---------- */
+const Store = {
+  get(key, fallback){ try{ const v = localStorage.getItem('lory_'+key); return v? JSON.parse(v) : fallback; }catch(e){ return fallback; } },
+  set(key, val){ try{ localStorage.setItem('lory_'+key, JSON.stringify(val)); }catch(e){ /* Safari privato: storage pieno o bloccato */ } },
+  uid(){ return 'id_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+};
+
+function nowISO(){ return new Date().toISOString(); }
+/* data locale in formato ISO (toISOString sposta il giorno nei fusi UTC+N!) */
+function isoLocal(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function todayStr(){ return isoLocal(new Date()); }
+function fmtDate(iso){
+  if(!iso) return '—';
+  const d = new Date(iso+'T00:00:00');
+  return d.toLocaleDateString('it-IT',{weekday:'short', day:'numeric', month:'short'});
+}
+function daysUntil(iso){
+  if(!iso) return 99;
+  const d = new Date(iso+'T00:00:00'), t = new Date(todayStr()+'T00:00:00');
+  return Math.round((d-t)/86400000);
+}
+function addDaysStr(iso, n){
+  const d = new Date(iso+'T00:00:00');
+  d.setDate(d.getDate()+n);
+  return isoLocal(d);
+}
+function startOfWeekStr(iso){
+  const d = new Date(iso+'T00:00:00');
+  const dow = d.getDay(); // 0=dom..6=sab
+  const diffToMonday = dow===0? -6 : 1-dow;
+  return addDaysStr(iso, diffToMonday);
+}
+function fmtDayShort(iso){
+  const d = new Date(iso+'T00:00:00');
+  return d.toLocaleDateString('it-IT',{weekday:'short'}).replace('.','');
+}
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(msg){
+  const host = document.getElementById('toastHost');
+  const el = document.createElement('div'); el.className='toast'; el.innerHTML=msg;
+  host.innerHTML=''; host.appendChild(el);
+  setTimeout(()=>el.remove(), 2600);
+}
+
+/* ---------- Settings ---------- */
+const Settings = {
+  get(){ return Store.get('settings', { provider:'anthropic', apiKey:'', model:'claude-haiku-4-5', openaiKey:'', openaiModel:'gpt-4o-mini', nome:'Lorenzo', classe:'', parentPin:'1234' }); },
+  set(s){ Store.set('settings', s); }
+};
+
+/* ---------- Gamification (XP, livelli, missioni) ---------- */
+const XP_LEVELS = [
+  {min:0,    nome:'Novizio',        ic:'🌱'},
+  {min:100,  nome:'Esploratore',    ic:'⚡'},
+  {min:250,  nome:'Mente Allenata', ic:'🧠'},
+  {min:500,  nome:'Campione',       ic:'🚀'},
+  {min:1000, nome:'Leggenda',       ic:'👑'}
+];
+const Gamify = {
+  get(){ return Store.get('xp', {total:0}); },
+  total(){ return Gamify.get().total; },
+  levelOf(total){ let lv = XP_LEVELS[0]; XP_LEVELS.forEach(l=>{ if(total>=l.min) lv=l; }); return lv; },
+  nextOf(total){ return XP_LEVELS.find(l=>l.min>total) || null; },
+  add(n, reason){
+    const x = Store.get('xp', {total:0});
+    const before = Gamify.levelOf(x.total);
+    x.total += n;
+    Store.set('xp', x);
+    Gamify.updateXpChip();
+    const after = Gamify.levelOf(x.total);
+    if(after.nome !== before.nome){
+      const next = Gamify.nextOf(x.total);
+      Gamify.levelUpOverlay(after, next);
+    }
+    return x.total;
+  },
+  levelUpOverlay(lv, next){
+    const progress = next ? Math.round(((Gamify.total()-lv.min) / (next.min-lv.min))*100) : 100;
+    const conf = ['🎉','✨','⭐','💫','🎊','🏆','✨','🎉'].map((c,i)=>
+      `<span style="left:${6+i*12}%; animation-delay:${(i*0.28).toFixed(2)}s;">${c}</span>`).join('');
+    const html = `
+    <div class="overlay center">
+      <div class="sheet levelup">
+        <div class="confetti">${conf}</div>
+        <span class="big">${lv.ic}</span>
+        <h2>Livello sbloccato!</h2>
+        <p style="font-weight:800; color:var(--accent-d); font-size:17px; margin:0 0 4px;">${lv.nome}</p>
+        ${next? `<p class="hint">Prossimo livello: ${next.ic} ${next.nome} · ancora ${next.min - Gamify.total()} XP</p>
+        <div class="progress-bar" style="margin-top:8px;"><div style="width:${progress}%"></div></div>`
+        : '<p class="hint">Hai raggiunto il livello massimo. Sei una leggenda! 🏆</p>'}
+        <button class="btn block" style="margin-top:14px;" onclick="Overlay.close()">Continua così 💪</button>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+  updateXpChip(){
+    const cnt = document.getElementById('xpCount');
+    if(cnt) cnt.textContent = Gamify.total();
+  },
+  missionDone(){
+    return Lezioni.list().some(l=> l.stato==='completata' && l.completataIl===todayStr());
+  }
+};
+
+/* ---------- LLM (Claude / ChatGPT) ---------- */
+const LLM = {
+  hasKey(){
+    const s = Settings.get();
+    return s.provider==='openai' ? !!s.openaiKey : !!s.apiKey;
+  },
+  async call(messages, system, opts={}){
+    const s = Settings.get();
+    if(!LLM.hasKey()){ throw new Error('NO_KEY'); }
+    return s.provider==='openai'
+      ? LLM._callOpenAI(messages, system, opts, s)
+      : LLM._callAnthropic(messages, system, opts, s);
+  },
+  async _callAnthropic(messages, system, opts, s){
+    const body = {
+      model: opts.model || s.model || 'claude-haiku-4-5',
+      max_tokens: opts.maxTokens || 2000,
+      system: system || undefined,
+      messages
+    };
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': s.apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok){
+      const t = await res.text().catch(()=> '');
+      throw new Error('API_ERR:'+res.status+' '+t.slice(0,200));
+    }
+    const data = await res.json();
+    const textBlock = (data.content||[]).find(c=>c.type==='text');
+    return textBlock ? textBlock.text : '';
+  },
+  async _callOpenAI(messages, system, opts, s){
+    const oaMessages = [];
+    if(system) oaMessages.push({role:'system', content: system});
+    messages.forEach(m=>{
+      if(typeof m.content === 'string'){ oaMessages.push({role:m.role, content:m.content}); return; }
+      const parts = (m.content||[]).map(block=>{
+        if(block.type==='text') return {type:'text', text: block.text};
+        if(block.type==='image') return {type:'image_url', image_url:{url:`data:${block.source.media_type};base64,${block.source.data}`}};
+        return null;
+      }).filter(Boolean);
+      oaMessages.push({role:m.role, content: parts});
+    });
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+s.openaiKey
+      },
+      body: JSON.stringify({
+        model: opts.model || s.openaiModel || 'gpt-4o-mini',
+        max_tokens: opts.maxTokens || 2000,
+        messages: oaMessages
+      })
+    });
+    if(!res.ok){
+      const t = await res.text().catch(()=> '');
+      throw new Error('API_ERR:'+res.status+' '+t.slice(0,200));
+    }
+    const data = await res.json();
+    const choice = (data.choices||[])[0];
+    return choice ? choice.message.content : '';
+  },
+  async callJSON(messages, system, opts={}){
+    const txt = await LLM.call(messages, system, opts);
+    const match = txt.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+    if(!match) throw new Error('NO_JSON');
+    return JSON.parse(match[0]);
+  }
+};
+
+/* ---------- Prompts ---------- */
+const Prompts = {
+  extractLezione(materia){
+    return `Sei un assistente che aiuta un ragazzo di scuola media (materia: ${materia||'non specificata'}) a studiare. `+
+    `Ti vengono mostrate foto di pagine di un libro di testo o quaderno. `+
+    `Estrai il testo principale in modo chiaro e sintetico, correggi eventuali errori OCR evidenti, e organizza in paragrafi leggibili. `+
+    `Alla fine rispondi SOLO con un oggetto JSON valido (nessun altro testo) con questa forma: `+
+    `{"titolo": "titolo breve dell'argomento", "testo": "testo estratto e riassunto in italiano semplice", "materiaSuggerita": "nome materia", "minutiStudio": numero_minuti_stimati_per_studiare}`;
+  },
+  mappaConcettuale(){
+    return `Sei un assistente didattico per un ragazzo di scuola media. Data una lezione, crea una mappa concettuale gerarchica. `+
+    `Rispondi SOLO con JSON valido in questa forma (max 3 livelli, max 5 nodi per livello): `+
+    `{"titolo":"...", "nodi":[{"nome":"concetto principale","sotto":[{"nome":"sotto-concetto","sotto":[{"nome":"dettaglio"}]}]}]}`;
+  },
+  esercizi(){
+    return `Sei un professore che crea esercizi di verifica per un ragazzo di scuola media, basati sulla lezione fornita. `+
+    `Crea 5 domande a risposta multipla (4 opzioni ciascuna, una sola corretta) di difficoltà crescente. `+
+    `Rispondi SOLO con JSON valido: {"domande":[{"domanda":"...","opzioni":["a","b","c","d"],"corretta":0,"spiegazione":"breve spiegazione del perché è corretta"}]}`;
+  },
+  profSystem(nome){
+    return `Sei "Prof. Aliseo", un professore agentico gentile ma esigente che aiuta ${nome||'lo studente'} (scuola media) a fare ricerche scolastiche. `+
+    `Il tuo compito: NON dare mai la risposta pronta subito. Fai domande di approfondimento, guida il ragionamento, chiedi fonti, correggi imprecisioni, e fai la review critica di quello che lo studente scrive. `+
+    `Sii incoraggiante ma onesto. Usa un tono amichevole, frasi brevi, qualche emoji con moderazione. Rispondi in italiano.`;
+  },
+  valutaDomande(){
+    return `Sei un professore che valuta la qualità delle domande poste da uno studente di scuola media durante una ricerca, non le risposte. `+
+    `Considera: la domanda era specifica? Approfondiva un punto chiave? Mostrava spirito critico? `+
+    `Rispondi SOLO con JSON: {"punteggio": numero_da_0_a_100, "commento":"breve feedback costruttivo e incoraggiante in italiano", "puntiForza":["..."], "daMigliorare":["..."]}`;
+  }
+};
+
+/* ---------- Fallback (offline / no key) ---------- */
+const Fallback = {
+  mappa(titolo){
+    return { titolo: titolo||'Lezione', nodi:[
+      {nome:'Argomento principale', sotto:[
+        {nome:'Aggiungi la chiave API nelle Impostazioni ⚙️ per generare la mappa reale', sotto:[]}
+      ]}
+    ]};
+  },
+  esercizi(){
+    return { domande:[
+      {domanda:'Configura la chiave API Claude nelle Impostazioni per generare esercizi veri su questa lezione.', opzioni:['OK, vado nelle Impostazioni','Più tardi','Non ora','Boh'], corretta:0, spiegazione:'Senza chiave API non posso generare domande sul contenuto reale della lezione.'}
+    ]};
+  }
+};
+
+/* =========================================================
+   APP — routing, render
+   ========================================================= */
+const App = {
+  tab: 'oggi',
+
+  init(){
+    document.querySelectorAll('.tab-btn').forEach(b=>{
+      b.addEventListener('click', ()=> App.go(b.dataset.tab));
+    });
+    const s = Settings.get();
+    document.getElementById('brandOwner').textContent = ' — ' + (s.nome||'Lorenzo');
+    if(!LLM.hasKey()){
+      setTimeout(()=> App.openSettings(true), 400);
+    }
+    App.updateStreakChip();
+    Gamify.updateXpChip();
+    Calendario.seedDefaults();
+    App.go('oggi');
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('sw.js').catch(()=>{});
+    }
+    window.addEventListener('beforeinstallprompt', e=>{
+      e.preventDefault();
+      App._installEvt = e;
+      if(App.tab==='oggi') App.refresh();
+    });
+  },
+
+  go(tab){
+    App.tab = tab;
+    document.querySelectorAll('.tab-btn').forEach(b=> b.classList.toggle('active', b.dataset.tab===tab));
+    const render = { oggi: Screens.oggi, lezioni: Screens.lezioni, esercizi: Screens.esercizi, ricerca: Screens.ricerca, genitori: Screens.genitori }[tab];
+    document.getElementById('main').innerHTML = render();
+    App.renderModeBar();
+    const fab = document.getElementById('fab');
+    if(fab) fab.style.display = (tab==='oggi'||tab==='lezioni') ? 'flex' : 'none';
+    window.scrollTo(0,0);
+  },
+
+  /* barra visibile su ogni tab: dice a che vista sei */
+  renderModeBar(){
+    const el = document.getElementById('modeBar');
+    if(!el) return;
+    if(Screens._parentUnlocked && App.tab!=='genitori'){
+      el.innerHTML = `<div class="mode-bar parents"><span>👀 Vista Genitori attiva — vedi solo i progressi di Lorenzo</span><b class="mode-exit" onclick="Screens._parentUnlocked=false; App.refresh();">Torna alla vista ragazzo</b></div>`;
+    } else {
+      el.innerHTML = '';
+    }
+  },
+
+  refresh(){ App.go(App.tab); },
+
+  installPwa(){
+    if(!App._installEvt) return;
+    App._installEvt.prompt();
+    App._installEvt.userChoice.then(()=>{ App._installEvt = null; App.refresh(); });
+  },
+  dismissInstall(){
+    Store.set('installDismissed', true);
+    App.refresh();
+  },
+
+  updateStreakChip(){
+    const st = Store.get('streak', {count:0, last:null});
+    const cnt = document.getElementById('streakCount');
+    if(cnt) cnt.textContent = st.count;
+    const chip = document.getElementById('streakChip');
+    if(chip) chip.classList.toggle('hot', st.count>=3);
+  },
+
+  bumpStreak(){
+    const st = Store.get('streak', {count:0, last:null});
+    const today = todayStr();
+    if(st.last === today) return;
+    const y = addDaysStr(todayStr(), -1);
+    st.count = (st.last === y) ? st.count+1 : 1;
+    st.last = today;
+    Store.set('streak', st);
+    App.updateStreakChip();
+  },
+
+  openSettings(firstRun){
+    const s = Settings.get();
+    const html = `
+      <div class="overlay" onclick="if(event.target===this) Overlay.close()">
+        <div class="sheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-head">
+            <div class="sheet-title">⚙️ Impostazioni</div>
+            <button class="sheet-x" onclick="Overlay.close()" title="Chiudi">✕</button>
+          </div>
+          ${firstRun? `<div class="banner accent" style="background:var(--accent-l); color:var(--accent-d);">👋 Passo per chi installa l'app (1 minuto): incolla qui sotto la chiave API. Per il resto l'app è già pronta per Lorenzo.</div>`:''}
+          <div class="field">
+            <label>Nome</label>
+            <input id="set-nome" value="${escapeHtml(s.nome)}">
+          </div>
+          <div class="field">
+            <label>Classe</label>
+            <input id="set-classe" value="${escapeHtml(s.classe)}" placeholder="es. 1ª Media">
+          </div>
+          <div class="field">
+            <label>Assistente AI</label>
+            <select id="set-provider" onchange="App.toggleProviderFields(this.value)">
+              <option value="anthropic" ${s.provider!=='openai'?'selected':''}>Claude (Anthropic)</option>
+              <option value="openai" ${s.provider==='openai'?'selected':''}>ChatGPT (OpenAI)</option>
+            </select>
+          </div>
+          <div id="provider-anthropic" style="display:${s.provider==='openai'?'none':'block'}">
+            <div class="field">
+              <label>Chiave API Claude (Anthropic)</label>
+              <input id="set-apikey" type="password" value="${escapeHtml(s.apiKey)}" placeholder="sk-ant-...">
+              <div class="hint">Salvata solo su questo dispositivo, mai inviata altrove.</div>
+            </div>
+            <div class="field">
+              <label>Modello</label>
+              <select id="set-model">
+                <option value="claude-haiku-4-5" ${s.model==='claude-haiku-4-5'?'selected':''}>Haiku 4.5 (veloce)</option>
+                <option value="claude-sonnet-4-6" ${s.model==='claude-sonnet-4-6'?'selected':''}>Sonnet 4.6 (più preciso)</option>
+              </select>
+            </div>
+          </div>
+          <div id="provider-openai" style="display:${s.provider==='openai'?'block':'none'}">
+            <div class="banner amber">⚠️ ChatGPT non permette chiamate dirette dal browser (limite tecnico di OpenAI, CORS): con questa opzione le richieste falliranno quasi certamente e l'app userà i contenuti di riserva. Usa Claude per il funzionamento reale.</div>
+            <div class="field">
+              <label>Chiave API OpenAI</label>
+              <input id="set-openaikey" type="password" value="${escapeHtml(s.openaiKey)}" placeholder="sk-...">
+              <div class="hint">Salvata solo su questo dispositivo, mai inviata altrove.</div>
+            </div>
+            <div class="field">
+              <label>Modello</label>
+              <select id="set-openaimodel">
+                <option value="gpt-4o-mini" ${s.openaiModel==='gpt-4o-mini'?'selected':''}>GPT-4o mini (veloce)</option>
+                <option value="gpt-4o" ${s.openaiModel==='gpt-4o'?'selected':''}>GPT-4o (più preciso)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>PIN Vista Genitori</label>
+            <input id="set-pin" inputmode="numeric" maxlength="6" value="${escapeHtml(s.parentPin)}">
+            <div class="hint">A 4 cifre: sblocca la scheda 👪 Genitori in basso, dove vedi i progressi di Lorenzo (solo lettura). Predefinito: 1234.</div>
+          </div>
+          <button class="btn block" onclick="App.saveSettings()">Salva</button>
+        </div>
+      </div>`;
+    Overlay.open(html);
+  },
+
+  toggleProviderFields(provider){
+    document.getElementById('provider-anthropic').style.display = provider==='openai' ? 'none' : 'block';
+    document.getElementById('provider-openai').style.display = provider==='openai' ? 'block' : 'none';
+  },
+
+  saveSettings(){
+    const s = Settings.get();
+    s.nome = document.getElementById('set-nome').value.trim() || 'Lorenzo';
+    s.classe = document.getElementById('set-classe').value.trim();
+    s.provider = document.getElementById('set-provider').value;
+    s.apiKey = document.getElementById('set-apikey').value.trim();
+    s.model = document.getElementById('set-model').value;
+    s.openaiKey = document.getElementById('set-openaikey').value.trim();
+    s.openaiModel = document.getElementById('set-openaimodel').value;
+    s.parentPin = document.getElementById('set-pin').value.trim() || '1234';
+    Settings.set(s);
+    document.getElementById('brandOwner').textContent = ' — ' + s.nome;
+    Overlay.close();
+    toast('Impostazioni salvate ✅');
+    App.refresh();
+  }
+};
+
+const Overlay = {
+  open(html){ document.getElementById('overlayHost').innerHTML = html; },
+  close(){ document.getElementById('overlayHost').innerHTML = ''; }
+};
+
+/* =========================================================
+   CALENDARIO — impegni pomeridiani + calcolo ore libere
+   Finestra di studio: 15:00-21:00 (scuola 8-14, pranzo e riposo fino alle 15)
+   ========================================================= */
+const DEFAULT_IMPEGNI = [
+  { nome:'Allenamento (Possenti)',   ricorrente:true, giornoSettimana:1, inizio:'16:00', fine:'17:30', viaggioPrima:20, viaggioDopo:20, docciaMin:30 },
+  { nome:'Allenamento (Palazzetto)', ricorrente:true, giornoSettimana:2, inizio:'18:30', fine:'20:00', viaggioPrima:15, viaggioDopo:0,  docciaMin:30 },
+  { nome:'Allenamento (Palazzetto)', ricorrente:true, giornoSettimana:3, inizio:'18:30', fine:'20:00', viaggioPrima:15, viaggioDopo:0,  docciaMin:30 },
+  { nome:'Allenamento (Possenti)',   ricorrente:true, giornoSettimana:5, inizio:'18:30', fine:'20:00', viaggioPrima:20, viaggioDopo:0,  docciaMin:30 }
+];
+function fmtHM(min){
+  return String(Math.floor(min/60)).padStart(2,'0') + ':' + String(min%60).padStart(2,'0');
+}
+const Calendario = {
+  WINDOW_START: 15*60, WINDOW_END: 21*60, // 15:00-21:00
+
+  list(){ return Store.get('calendario', []); },
+  save(list){ Store.set('calendario', list); },
+  seedDefaults(){
+    if(!Store.get('seeded', false)){
+      if(Calendario.list().length===0){
+        DEFAULT_IMPEGNI.forEach(i=> Calendario.add(Object.assign({}, i, {seeded:true})));
+      }
+      Store.set('seeded', true);
+    } else {
+      /* migrazione: allenamenti creati prima del flag seeded -> protegili */
+      const list = Calendario.list();
+      const daProteggere = list.some(i=> (i.nome||'').indexOf('Allenamento')===0 && !i.seeded);
+      if(daProteggere){
+        Calendario.save(list.map(i=> (i.nome||'').indexOf('Allenamento')===0 ? Object.assign({}, i, {seeded:true}) : i));
+      }
+    }
+  },
+  add(item){
+    const list = Calendario.list();
+    item.id = Store.uid();
+    list.push(item);
+    Calendario.save(list);
+  },
+  update(id, patch){
+    Calendario.save(Calendario.list().map(i=> i.id===id ? Object.assign({}, i, patch) : i));
+  },
+  remove(id){ Calendario.save(Calendario.list().filter(i=>i.id!==id)); },
+
+  _toMin(hhmm){
+    const p = (hhmm||'').split(':').map(Number);
+    if(isNaN(p[0])) return null;
+    return p[0]*60 + (p[1]||0);
+  },
+
+  /* blocco occupato (in minuti da mezzanotte) includendo viaggio e doccia; null se l'impegno non cade quel giorno */
+  bloccoIl(item, dateStr){
+    const dow = new Date(dateStr+'T00:00:00').getDay(); // 0=dom..6=sab
+    const match = (item.ricorrente && item.giornoSettimana===dow) || (!item.ricorrente && item.data===dateStr);
+    if(!match) return null;
+    const vp = item.viaggioPrima||0, vd = item.viaggioDopo||0, dc = item.docciaMin||0;
+    const s = Calendario._toMin(item.inizio), e = Calendario._toMin(item.fine);
+    if(s!=null && e!=null){
+      return { start: s - vp, end: e + vd + dc };
+    }
+    /* legacy: solo durata, orario sconosciuto */
+    return { start:null, end:null, dur: (item.durataMin||60) + vp + vd + dc };
+  },
+
+  blocchiIl(dateStr){
+    return Calendario.list().map(i=> Calendario.bloccoIl(i, dateStr)).filter(Boolean)
+      .sort((a,b)=> (a.start==null? 9999 : a.start) - (b.start==null? 9999 : b.start));
+  },
+
+  oreImpegnateIl(dateStr){
+    let min = 0;
+    Calendario.blocchiIl(dateStr).forEach(b=>{ min += (b.dur!=null? b.dur : b.end - b.start); });
+    return min/60;
+  },
+
+  oreLibere(dateStr){
+    const totale = (Calendario.WINDOW_END - Calendario.WINDOW_START)/60;
+    return Math.max(0, totale - Calendario.oreImpegnateIl(dateStr));
+  },
+
+  /* slot orari liberi nella finestra, es. "15:00–15:40 e 18:20–21:00" */
+  slotTesto(dateStr){
+    const blocks = Calendario.blocchiIl(dateStr).filter(b=> b.start!=null);
+    let cursor = Calendario.WINDOW_START;
+    const parts = [];
+    blocks.forEach(b=>{
+      if(b.start > cursor) parts.push([cursor, b.start]);
+      cursor = Math.max(cursor, b.end);
+    });
+    if(cursor < Calendario.WINDOW_END) parts.push([cursor, Calendario.WINDOW_END]);
+    return parts.map(([a,b])=> `${fmtHM(a)}–${fmtHM(b)}`).join(' e ');
+  }
+};
+
+/* ---------- Studio (sessioni col timer) ---------- */
+function fmtMMSS(sec){
+  const m = Math.floor(sec/60), s = sec%60;
+  return m + ':' + String(s).padStart(2,'0');
+}
+const Studio = {
+  list(){ return Store.get('studio', []); },
+  add(s){ const l = Studio.list(); l.push(s); Store.set('studio', l); },
+  minutiOggi(){ const t = todayStr(); return Studio.list().filter(s=>s.data===t).reduce((a,s)=>a+s.minuti,0); },
+  minutiTotali(){ return Studio.list().reduce((a,s)=>a+s.minuti,0); }
+};
+
+/* =========================================================
+   LEZIONI
+   ========================================================= */
+const Lezioni = {
+  list(){ return Store.get('lezioni', []); },
+  save(list){ Store.set('lezioni', list); },
+  get(id){ return Lezioni.list().find(l=>l.id===id); },
+  add(l){
+    const list = Lezioni.list();
+    l.id = Store.uid(); l.creata = nowISO(); l.stato = l.stato || 'da_fare';
+    list.unshift(l);
+    Lezioni.save(list);
+    return l;
+  },
+  update(id, patch){
+    const list = Lezioni.list();
+    const i = list.findIndex(l=>l.id===id);
+    if(i>=0){ list[i] = {...list[i], ...patch}; Lezioni.save(list); }
+  },
+  remove(id){ Lezioni.save(Lezioni.list().filter(l=>l.id!==id)); },
+
+  /* punteggio priorità: più alto = più urgente */
+  priorita(l){
+    const giorni = Math.max(0.5, daysUntil(l.dataLezione) + 1);
+    const minuti = l.minutiStudio || 30;
+    const oreLibere = Calendario.oreLibere(l.dataLezione || todayStr());
+    const fattoreOre = oreLibere > 0 ? 1/oreLibere : 3;
+    return (minuti/60) * fattoreOre * (1/giorni) * 100;
+  },
+
+  /* lezioni da fare per una data specifica; per "oggi" include anche quelle scadute */
+  perGiorno(dateStr){
+    const isToday = dateStr===todayStr();
+    return Lezioni.list()
+      .filter(l=> l.stato!=='completata')
+      .filter(l=> l.dataLezione===dateStr || (isToday && daysUntil(l.dataLezione)<0))
+      .sort((a,b)=> Lezioni.priorita(b) - Lezioni.priorita(a));
+  }
+};
+
+/* ---------- Immagine → base64 ridotto ---------- */
+function fileToResizedBase64(file, maxDim=1000){
+  return new Promise((resolve,reject)=>{
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.onerror = reject;
+    img.onload = ()=>{
+      let {width,height} = img;
+      if(width>height && width>maxDim){ height = height*maxDim/width; width=maxDim; }
+      else if(height>maxDim){ width = width*maxDim/height; height=maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width=width; canvas.height=height;
+      canvas.getContext('2d').drawImage(img,0,0,width,height);
+      resolve(canvas.toDataURL('image/jpeg', 0.72));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* =========================================================
+   SCREENS
+   ========================================================= */
+const Screens = {
+
+  oggi(){
+    const s = Settings.get();
+    const oggi = todayStr();
+    Screens._selectedDay = Screens._selectedDay || oggi;
+    const selDay = Screens._selectedDay;
+    const isToday = selDay===oggi;
+
+    const coda = Lezioni.perGiorno(selDay);
+    const oreLibere = Calendario.oreLibere(selDay);
+    const urgenti = coda.filter(l=> daysUntil(l.dataLezione)<=1);
+
+    let banner = '';
+    if(isToday && urgenti.length && oreLibere < 1){
+      banner = `<div class="banner red">⚠️ <div><b>Poco tempo oggi!</b><br>Hai solo ${oreLibere.toFixed(1)}h libere e ${urgenti.length} lezion${urgenti.length>1?'i':'e'} urgente/i.</div></div>`;
+    } else if(!LLM.hasKey()){
+      banner = `<div class="banner amber">🔑 <div><b>Manca un ultimo passaggio</b> (lo fa un adulto): apri ⚙️ Impostazioni e incolla la chiave che ti dà papà. Così la tua lezione diventa anche quiz, mappa e puoi chiedere al Prof.</div></div>`;
+    }
+
+    const items = coda.slice(0,6).map(l=>{
+      const g = daysUntil(l.dataLezione);
+      const urgTag = g<0? '<span class="tag red">Scaduta</span>' : g===0? '<span class="tag red">Oggi</span>' : g===1? '<span class="tag amber">Domani</span>' : `<span class="tag grey">tra ${g}g</span>`;
+      return `
+      <div class="card lezione-card" onclick="Screens.openLezione('${l.id}')">
+        <div class="thumb">${l.immagini&&l.immagini[0]? `<img src="${l.immagini[0]}">` : '📖'}</div>
+        <div style="flex:1;">
+          <h3>${escapeHtml(l.titolo||'Lezione')}</h3>
+          <p>${escapeHtml(l.materia||'')}</p>
+          <div class="lezione-meta">${urgTag}<span class="tag accent">${l.minutiStudio||30} min</span></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const lv = Gamify.levelOf(Gamify.total());
+    const next = Gamify.nextOf(Gamify.total());
+    const xpProgress = next? Math.round(((Gamify.total()-lv.min)/(next.min-lv.min))*100) : 100;
+    const studiatoOggi = Studio.minutiOggi();
+    const slot = isToday || selDay ? Calendario.slotTesto(selDay) : '';
+    const missionDone = Gamify.missionDone();
+
+    /* messaggio principale: cosa devi fare OGGI */
+    const task = isToday
+      ? (coda.length
+          ? `📖 Da studiare oggi: <b>${escapeHtml((coda[0].titolo||'Lezione').slice(0,34))}</b>${coda.length>1? ` <span class="what" style="opacity:.85;">(+${coda.length-1} altra${coda.length>2?'e':''})</span>`:''}`
+          : `🎉 Nessuna lezione da studiare oggi!`)
+      : `📅 ${fmtDate(selDay)}: ${coda.length? `<b>${coda.length} lezion${coda.length>1?'i':'e'}</b> da studiare` : 'niente di programmato'}`;
+    const info = [
+      slot && oreLibere>0 ? `🕒 Tempo libero: <b>${slot}</b>` : null,
+      isToday && studiatoOggi>0 ? `✅ Studiato oggi: <b>${studiatoOggi} min</b> 💪` : null
+    ].filter(Boolean).join('<br>');
+
+    const hero = `
+      <div class="hero">
+        <div class="hi">Ciao ${escapeHtml(s.nome||'Lorenzo')} <span class="wave">👋</span></div>
+        <div class="task">${task}</div>
+        ${info? `<div class="info">${info}</div>`:''}
+        <div class="xp-line">
+          <span class="lv-chip">${lv.ic} ${lv.nome}</span>
+          <div class="xp-bar"><div style="width:${xpProgress}%"></div></div>
+        </div>
+        ${next? `<div class="xp-next">ancora ${next.min - Gamify.total()} XP → ${next.nome}</div>` : '<div class="xp-next">livello massimo 🏆</div>'}
+        ${isToday? (coda.length
+          ? `<button class="cta" onclick="Screens.startStudio('${coda[0].id}')">▶️ Studia ora: ${escapeHtml((coda[0].titolo||'').slice(0,28))}</button>
+             <button class="cta ghost2" onclick="Screens.uploadModal()">📷 Fotografa la pagina del libro</button>`
+          : `<button class="cta" onclick="Screens.uploadModal()">📷 Fotografa la pagina del libro</button>`):''}
+      </div>`;
+
+    const mission = isToday ? `
+      <div class="mission ${missionDone?'done':''}">
+        <span class="mi">${missionDone?'✅':'🎯'}</span>
+        <div class="mt">
+          <b>Missione di oggi: completa 1 lezione</b>
+          <div class="hint">${missionDone? 'Fatto! Guadagni XP extra se continui 💪' : 'Completa una lezione e guadagni +25 XP'}</div>
+        </div>
+        <span class="check">${missionDone?'✓':'·'}</span>
+      </div>` : '';
+
+    /* card "come funziona" finché non ha caricato la prima lezione */
+    const howCard = Lezioni.list().length===0 ? `
+      <div class="card how-card">
+        <h3>Come funziona ✨</h3>
+        <div class="how-step"><span>1️⃣</span> 📷 Fai una foto della pagina del libro</div>
+        <div class="how-step"><span>2️⃣</span> 🧠 Aliseo la trasforma in quiz e mappe</div>
+        <div class="how-step"><span>3️⃣</span> ⏱️ Studi col timer e guadagni punti ⭐</div>
+      </div>` : '';
+
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.navigator.standalone;
+    const installBanner = !Store.get('installDismissed', false) && (App._installEvt || isIOS) ? `
+      <div class="install-banner">
+        <span class="mi">📲</span>
+        ${App._installEvt
+          ? `<div class="mt"><b>Installa Aliseo sul telefono</b><div class="hint">Icona in home, schermo intero, funziona anche offline</div></div>
+             <button class="btn sm" onclick="App.installPwa()">Installa</button>`
+          : `<div class="mt"><b>Installa Aliseo: icona in home</b><div class="hint">Su iPhone: pulsante Condividi ↗️ in basso → "Aggiungi alla schermata Home"</div></div>`}
+        <button class="btn ghost sm" onclick="App.dismissInstall()">✕</button>
+      </div>` : '';
+
+    return `<div class="screen">
+      ${hero}
+      ${Screens.weekStrip(selDay)}
+      ${mission}
+      ${howCard}
+      ${banner}
+      ${installBanner}
+      <div class="section-hdr"><h2>${isToday? 'Da studiare, in ordine di priorità' : 'Da studiare quel giorno'}</h2></div>
+      ${items || `<div class="card empty"><span class="emoji">🎉</span><div class="title">Nessuna lezione in coda</div><p>${isToday? 'Fotografa la pagina da studiare: in 10 secondi è pronta' : 'Niente di programmato per questo giorno'}</p>
+        ${isToday? '<button class="btn big-btn" onclick="Screens.uploadModal()">📷 Fotografa la pagina del libro</button>':''}
+      </div>`}
+      <div class="section-hdr"><h2>Calendario pomeriggio</h2></div>
+      ${Screens.calendarioWidget()}
+    </div>`;
+  },
+
+  weekStrip(selDay){
+    const monday = startOfWeekStr(todayStr());
+    const today = todayStr();
+    const pills = Array.from({length:7}).map((_,i)=>{
+      const d = addDaysStr(monday, i);
+      const num = new Date(d+'T00:00:00').getDate();
+      const hasLezioni = Lezioni.perGiorno(d).length>0;
+      const hasImpegni = Calendario.oreImpegnateIl(d) > 0;
+      const dots = (hasLezioni? '<span></span>':'') + (hasImpegni? '<span class="busy"></span>':'');
+      return `<button class="day-pill ${d===today?'today':''} ${d===selDay?'selected':''}" onclick="Screens.selectDay('${d}')">
+        <span class="dow">${fmtDayShort(d)}</span>
+        <span class="num">${num}</span>
+        <span class="dots">${dots}</span>
+      </button>`;
+    }).join('');
+    return `<div class="week-strip">${pills}</div>
+      <div class="week-legend"><span class="lg"><span class="d1"></span>lezione da studiare</span><span class="lg"><span class="d2"></span>allenamento</span></div>`;
+  },
+
+  selectDay(d){
+    Screens._selectedDay = d;
+    App.refresh();
+  },
+
+  calendarioWidget(){
+    const list = Calendario.list();
+    const rows = list.map(i=>{
+      const locked = !!i.seeded;
+      const actions = locked
+        ? `<span class="hint" style="white-space:nowrap;" title="Orario fisso di Lorenzo">🔒</span>`
+        : `<button class="btn ghost sm" onclick="Screens.editImpegno('${i.id}')" title="Modifica">✏️</button>
+           <button class="btn ghost sm" onclick="Screens.delImpegno('${i.id}')" title="Elimina">✕</button>`;
+      return `
+      <div class="card-row" style="padding:8px 0; border-bottom:1px solid var(--line);">
+        <div><b>${escapeHtml(i.nome)}</b><div class="hint">${i.ricorrente? ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'][i.giornoSettimana] : fmtDate(i.data)}${i.inizio? ` · ${i.inizio}–${i.fine}`:''}${(i.viaggioPrima||i.docciaMin)? ` · (${i.viaggioPrima||0}′ viaggio${i.docciaMin? ` + ${i.docciaMin}′ doccia`:''})`:''}</div></div>
+        <div style="display:flex; gap:6px; align-items:center;">${actions}</div>
+      </div>`;
+    }).join('');
+    return `<div class="card">
+      ${rows || '<p style="padding:6px 0;">Nessun impegno extra-scolastico inserito.</p>'}
+      <button class="btn secondary block" style="margin-top:10px;" onclick="Screens.addImpegnoModal()">+ Aggiungi impegno</button>
+    </div>`;
+  },
+
+  addImpegnoModal(editId){
+    const item = editId ? Calendario.list().find(i=>i.id===editId) : null;
+    const tipo = item ? (item.ricorrente ? 'ricorrente' : 'singolo') : 'ricorrente';
+    const html = `
+    <div class="overlay" onclick="if(event.target===this) Overlay.close()">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">${item? 'Modifica impegno' : 'Nuovo impegno pomeridiano'}</div>
+        <div class="field"><label>Nome (es. Calcio, Catechismo)</label><input id="imp-nome" value="${item? escapeHtml(item.nome):''}"></div>
+        <div class="field"><label>Tipo</label>
+          <select id="imp-tipo" onchange="document.getElementById('imp-ric').style.display=this.value==='ricorrente'?'block':'none'; document.getElementById('imp-sing').style.display=this.value==='singolo'?'block':'none';">
+            <option value="ricorrente"${tipo==='ricorrente'?' selected':''}>Ricorrente ogni settimana</option>
+            <option value="singolo"${tipo==='singolo'?' selected':''}>Solo una data</option>
+          </select>
+        </div>
+        <div id="imp-ric" class="field"${tipo==='singolo'?' style="display:none;"':''}><label>Giorno della settimana</label>
+          <select id="imp-giorno"><option value="1">Lunedì</option><option value="2">Martedì</option><option value="3">Mercoledì</option><option value="4">Giovedì</option><option value="5">Venerdì</option><option value="6">Sabato</option><option value="0">Domenica</option></select>
+        </div>
+        <div id="imp-sing" class="field hidden"${tipo==='singolo'?'':' style="display:none;"'}><label>Data</label><input type="date" id="imp-data" value="${item&&item.data? item.data:''}"></div>
+        <div style="display:flex; gap:10px;">
+          <div class="field" style="flex:1;"><label>Ora inizio</label><input type="time" id="imp-inizio" value="${item? item.inizio||'18:30':'18:30'}"></div>
+          <div class="field" style="flex:1;"><label>Ora fine</label><input type="time" id="imp-fine" value="${item? item.fine||'20:00':'20:00'}"></div>
+        </div>
+        <div class="hint" style="margin:-8px 0 14px;">Viaggio da/verso casa e doccia dopo l'attività vengono sottratti automaticamente dal tempo di studio.</div>
+        <div style="display:flex; gap:10px;">
+          <div class="field" style="flex:1;"><label>Viaggio prima (min)</label><input type="number" id="imp-viaggio" value="${item? item.viaggioPrima||0:15}"></div>
+          <div class="field" style="flex:1;"><label>Viaggio dopo (min)</label><input type="number" id="imp-viaggiodopo" value="${item? item.viaggioDopo||0:0}"></div>
+          <div class="field" style="flex:1;"><label>Doccia (min)</label><input type="number" id="imp-doccia" value="${item? item.docciaMin||0:30}"></div>
+        </div>
+        <button class="btn block" onclick="Screens.saveImpegno('${editId||''}')">Salva</button>
+      </div>
+    </div>`;
+    if(item && item.ricorrente && item.giornoSettimana!=null){
+      setTimeout(()=>{ const sel = document.getElementById('imp-giorno'); if(sel) sel.value = String(item.giornoSettimana); },0);
+    }
+    Overlay.open(html);
+  },
+
+  saveImpegno(editId){
+    const nome = document.getElementById('imp-nome').value.trim();
+    if(!nome){ toast('Scrivi un nome'); return; }
+    const tipo = document.getElementById('imp-tipo').value;
+    const item = {
+      nome,
+      ricorrente: tipo==='ricorrente',
+      inizio: document.getElementById('imp-inizio').value || '18:30',
+      fine: document.getElementById('imp-fine').value || '20:00',
+      viaggioPrima: parseInt(document.getElementById('imp-viaggio').value)||0,
+      viaggioDopo: parseInt(document.getElementById('imp-viaggiodopo').value)||0,
+      docciaMin: parseInt(document.getElementById('imp-doccia').value)||0
+    };
+    if(item.ricorrente) item.giornoSettimana = parseInt(document.getElementById('imp-giorno').value);
+    else item.data = document.getElementById('imp-data').value;
+    if(editId){
+      Calendario.update(editId, item);
+      Overlay.close();
+      toast('Impegno aggiornato ✏️');
+    } else {
+      Calendario.add(item);
+      Overlay.close();
+      toast('Impegno aggiunto 📅');
+    }
+    App.refresh();
+  },
+
+  editImpegno(id){ Screens.addImpegnoModal(id); },
+
+  delImpegno(id){
+    const item = Calendario.list().find(i=>i.id===id);
+    if(item && item.seeded){ toast('🔒 Orario fisso: non eliminabile'); return; }
+    Calendario.remove(id); App.refresh(); toast('Rimosso');
+  },
+
+  /* ---------------- LEZIONI ---------------- */
+  lezioni(){
+    const list = Lezioni.list();
+    const rows = list.map(l=>`
+      <div class="card lezione-card" onclick="Screens.openLezione('${l.id}')">
+        <div class="thumb">${l.immagini&&l.immagini[0]? `<img src="${l.immagini[0]}">` : '📖'}</div>
+        <div style="flex:1;">
+          <h3>${escapeHtml(l.titolo||'Lezione')}</h3>
+          <p>${escapeHtml(l.materia||'')} · ${fmtDate(l.dataLezione)}</p>
+          <div class="lezione-meta">
+            ${l.stato==='completata'? '<span class="tag green">Fatta ✓</span>' : '<span class="tag amber">Da fare</span>'}
+          </div>
+        </div>
+      </div>`).join('');
+
+    return `<div class="screen">
+      <h1 class="page-title">Lezioni 📷</h1>
+      <div class="subtitle">Fai una foto delle pagine del libro: Aliseo le trasforma in quiz e mappe ✨</div>
+      <button class="btn block" style="margin-bottom:16px;" onclick="Screens.uploadModal()">📷 Fotografa la pagina del libro</button>
+      ${rows || `<div class="card empty"><span class="emoji">📸</span><div class="title">Ancora nessuna lezione</div><p>Fai una foto della pagina da studiare: in 10 secondi è pronta</p></div>`}
+    </div>`;
+  },
+
+  uploadModal(){
+    const html = `
+    <div class="overlay" onclick="if(event.target===this) Overlay.close()">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">Nuova lezione</div>
+        <div class="field">
+          <label>Foto delle pagine</label>
+          <input type="file" id="up-files" accept="image/*" capture="environment" multiple onchange="Screens.onFilesPicked(event)">
+        </div>
+        <div id="up-thumbs" class="thumbs-row"></div>
+        <div class="field"><label>Materia</label><input id="up-materia" placeholder="es. Storia, Matematica..."></div>
+        <div class="field"><label>Note dal Diario / prof (opzionale)</label><textarea id="up-note" placeholder="Es. cosa ha detto il prof, compiti da DidUp..."></textarea></div>
+        <div class="field"><label>Per quando (data lezione/verifica)</label><input type="date" id="up-data" value="${todayStr()}"></div>
+        <div id="up-status"></div>
+        <button class="btn block" id="up-submit" onclick="Screens.processUpload()">Elabora lezione ✨</button>
+      </div>
+    </div>`;
+    Overlay.open(html);
+    Screens._pendingImages = [];
+  },
+
+  async onFilesPicked(ev){
+    const files = Array.from(ev.target.files||[]);
+    const host = document.getElementById('up-thumbs');
+    for(const f of files){
+      const b64 = await fileToResizedBase64(f);
+      Screens._pendingImages.push(b64);
+      const img = document.createElement('img'); img.src = b64; host.appendChild(img);
+    }
+  },
+
+  async processUpload(){
+    const materia = document.getElementById('up-materia').value.trim();
+    const note = document.getElementById('up-note').value.trim();
+    const dataLezione = document.getElementById('up-data').value;
+    const imgs = Screens._pendingImages || [];
+    const statusEl = document.getElementById('up-status');
+    const btn = document.getElementById('up-submit');
+
+    if(!imgs.length && !note){ toast('Aggiungi almeno una foto o una nota'); return; }
+
+    btn.disabled = true;
+    statusEl.innerHTML = `<div class="loading-row"><div class="spinner"></div> Leggo la lezione...</div>`;
+
+    let result = { titolo: materia||'Nuova lezione', testo: note||'', materiaSuggerita: materia, minutiStudio: 30 };
+
+    if(LLM.hasKey() && imgs.length){
+      try{
+        const content = [{type:'text', text: 'Note aggiuntive: '+(note||'nessuna')}];
+        imgs.forEach(b64=>{
+          content.push({type:'image', source:{type:'base64', media_type:'image/jpeg', data: b64.split(',')[1]}});
+        });
+        const parsed = await LLM.callJSON(
+          [{role:'user', content}],
+          Prompts.extractLezione(materia)
+        );
+        result = {...result, ...parsed};
+      }catch(e){
+        statusEl.innerHTML = `<div class="banner amber">⚠️ Non sono riuscito a leggere le foto (${e.message.slice(0,60)}). Salvo comunque la lezione con le note.</div>`;
+      }
+    } else if(!LLM.hasKey()){
+      statusEl.innerHTML = `<div class="banner amber">🔑 Senza chiave API salvo solo le foto e le note, senza estrazione automatica.</div>`;
+    }
+
+    const lezione = Lezioni.add({
+      titolo: result.titolo,
+      materia: result.materiaSuggerita || materia || 'Generale',
+      testo: result.testo || note,
+      immagini: imgs,
+      dataLezione: dataLezione,
+      minutiStudio: result.minutiStudio || 30,
+      stato: 'da_fare'
+    });
+
+    Overlay.close();
+    toast('Lezione salvata 📘<span class="xp-gain">+15 XP</span>');
+    Gamify.add(15);
+    App.go('lezioni');
+    setTimeout(()=> Screens.openLezione(lezione.id), 200);
+  },
+
+  openLezione(id){
+    const l = Lezioni.get(id);
+    if(!l) return;
+    const html = `
+    <div class="overlay" onclick="if(event.target===this) Overlay.close()">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="card-row" style="margin-bottom:10px;">
+          <div class="sheet-title" style="margin:0;">${escapeHtml(l.titolo)}</div>
+          ${l.stato==='completata'? '<span class="tag green">Fatta ✓</span>' : '<span class="tag amber">Da fare</span>'}
+        </div>
+        <p class="hint">${escapeHtml(l.materia)} · ${fmtDate(l.dataLezione)} · ~${l.minutiStudio||30} min</p>
+        ${l.immagini&&l.immagini.length? `<div class="thumbs-row">${l.immagini.map(i=>`<img src="${i}" style="width:72px;height:72px;">`).join('')}</div>`:''}
+        <div class="card" style="max-height:220px; overflow-y:auto; font-size:13.5px; white-space:pre-wrap;">${escapeHtml(l.testo||'Nessun testo estratto.')}</div>
+        <div style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;">
+          ${l.stato!=='completata'? `<button class="btn sm" onclick="Screens.startStudio('${l.id}')">▶️ Studia ora</button>` : ''}
+          <button class="btn secondary sm" onclick="Overlay.close(); Screens.go2('mappa','${l.id}')">🧠 Mappa</button>
+          <button class="btn secondary sm" onclick="Overlay.close(); Screens.go2('esercizi','${l.id}')">✏️ Esercizi</button>
+          <button class="btn secondary sm" onclick="Overlay.close(); Screens.go2('audio','${l.id}')">🎙️ Audio</button>
+          ${l.stato!=='completata'? `<button class="btn sm" onclick="Screens.markDone('${l.id}')">✓ Segna fatta</button>` : ''}
+          <button class="btn ghost sm" onclick="Screens.deleteLezione('${l.id}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  go2(tool, lezioneId){
+    Screens._toolLezioneId = lezioneId;
+    if(tool==='mappa') Screens.openMappa(lezioneId);
+    else if(tool==='esercizi'){ App.go('esercizi'); setTimeout(()=>Screens.startEsercizi(lezioneId),50); }
+    else if(tool==='audio') Screens.openAudio(lezioneId);
+  },
+
+  markDone(id){
+    Lezioni.update(id, {stato:'completata', completataIl: todayStr()});
+    App.bumpStreak();
+    Overlay.close();
+    toast('Ottimo lavoro! <span class="xp-gain">+25 XP</span>');
+    Gamify.add(25);
+    App.refresh();
+  },
+  deleteLezione(id){
+    Lezioni.remove(id);
+    Overlay.close();
+    toast('Lezione eliminata');
+    App.refresh();
+  },
+
+  /* ---------------- STUDIO (timer pomodoro) ---------------- */
+  startStudio(lezioneId){
+    const l = Lezioni.get(lezioneId);
+    if(!l) return;
+    if(Screens._timerInt) clearInterval(Screens._timerInt);
+    const total = Math.max(5, l.minutiStudio||25) * 60;
+    Screens._timer = { lezioneId, total, left: total, running:true, titolo: l.titolo };
+    Screens.renderStudio();
+    Screens._timerInt = setInterval(()=> Screens.tickStudio(), 1000);
+  },
+
+  renderStudio(){
+    const t = Screens._timer;
+    const pct = Math.round(((t.total - t.left)/t.total)*100);
+    const html = `
+    <div class="overlay center" onclick="">
+      <div class="sheet" style="text-align:center;">
+        <p class="hint" style="margin-bottom:4px;">Sessione di studio</p>
+        <div class="sheet-title">${escapeHtml(t.titolo||'Lezione')}</div>
+        <div class="studio-clock" id="studioClock">${fmtMMSS(t.left)}</div>
+        <div class="progress-bar" style="margin:14px 0 6px;"><div id="studioBar" style="width:${pct}%"></div></div>
+        <p class="hint" id="studioHint">${t.running? 'Telefono giù, concentrazione massima 🎯' : 'In pausa ⏸️'}</p>
+        <div style="display:flex; gap:8px; margin-top:14px;">
+          <button class="btn secondary block" id="studioPause" onclick="Screens.pauseStudio()">${t.running? '⏸️ Pausa' : '▶️ Riprendi'}</button>
+          <button class="btn block" onclick="Screens.finishStudio(false)">✅ Finito</button>
+        </div>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  tickStudio(){
+    const t = Screens._timer;
+    if(!t || !t.running) return;
+    t.left--;
+    const clock = document.getElementById('studioClock');
+    if(clock){
+      clock.textContent = fmtMMSS(Math.max(0,t.left));
+      document.getElementById('studioBar').style.width = Math.round(((t.total - t.left)/t.total)*100)+'%';
+    }
+    if(t.left<=0){ Screens.finishStudio(true); }
+  },
+
+  pauseStudio(){
+    const t = Screens._timer;
+    t.running = !t.running;
+    document.getElementById('studioPause').textContent = t.running? '⏸️ Pausa' : '▶️ Riprendi';
+    const hint = document.getElementById('studioHint');
+    if(hint) hint.textContent = t.running? 'Telefono giù, concentrazione massima 🎯' : 'In pausa ⏸️';
+  },
+
+  finishStudio(auto){
+    const t = Screens._timer;
+    if(!t) return;
+    if(Screens._timerInt){ clearInterval(Screens._timerInt); Screens._timerInt = null; }
+    Screens._timer = null;
+    const minuti = Math.max(1, Math.round((t.total - Math.max(0,t.left))/60));
+    Studio.add({ id:Store.uid(), lezioneId:t.lezioneId, minuti, data: todayStr(), creato: nowISO() });
+    const xp = Math.max(5, Math.round(minuti/5)*5);
+    Gamify.add(xp);
+    App.bumpStreak();
+
+    const html = `
+    <div class="overlay center" onclick="">
+      <div class="sheet" style="text-align:center;">
+        <span class="big" style="font-size:50px;">${auto? '🎉' : '💪'}</span>
+        <h3>${auto? 'Sessione completata!' : `${minuti} min di studio`}</h3>
+        <p class="hint">${auto? 'Hai finito tutta la sessione: grande!' : `Hai studiato ${minuti} minuti su "${escapeHtml(t.titolo||'')}"`}</p>
+        <p style="margin:10px 0 0;"><span class="xp-gain" style="font-size:14px; padding:5px 14px;">+${xp} XP</span></p>
+        <div style="display:flex; gap:8px; margin-top:16px;">
+          <button class="btn secondary block" onclick="Overlay.close(); App.refresh();">Chiudi</button>
+          <button class="btn block" onclick="Screens.markDone('${t.lezioneId}')">✓ Segna fatta</button>
+        </div>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  /* ---------------- MAPPA ---------------- */
+  async openMappa(lezioneId){
+    const l = Lezioni.get(lezioneId);
+    if(!l) return;
+    Overlay.open(`<div class="overlay center"><div class="sheet" style="text-align:center;"><div class="loading-row" style="justify-content:center;"><div class="spinner"></div> Creo la mappa concettuale...</div></div></div>`);
+    let mappa;
+    try{
+      if(!LLM.hasKey()) throw new Error('NO_KEY');
+      mappa = await LLM.callJSON(
+        [{role:'user', content:`Lezione (${l.materia}): ${l.titolo}\n\n${l.testo}`}],
+        Prompts.mappaConcettuale()
+      );
+    }catch(e){ mappa = Fallback.mappa(l.titolo); }
+
+    function renderNode(n, depth){
+      const hasSub = n.sotto && n.sotto.length;
+      if(!hasSub) return `<div class="mappa-node"><div class="head" style="cursor:default;">${escapeHtml(n.nome)}</div></div>`;
+      const allLeaves = n.sotto.every(s=> !s.sotto || !s.sotto.length);
+      if(allLeaves && depth>0){
+        return `<div class="mappa-node open"><div class="head" onclick="this.parentElement.classList.toggle('open')">${escapeHtml(n.nome)} <span>▾</span></div>
+          <div class="body">${n.sotto.map(s=>`<div class="leaf">${escapeHtml(s.nome)}</div>`).join('')}</div></div>`;
+      }
+      return `<div class="mappa-node open"><div class="head" onclick="this.parentElement.classList.toggle('open')">${escapeHtml(n.nome)} <span>▾</span></div>
+        <div class="body"><div class="sub">${n.sotto.map(s=>renderNode(s, depth+1)).join('')}</div></div></div>`;
+    }
+
+    const html = `
+    <div class="overlay" onclick="if(event.target===this) Overlay.close()">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">🧠 ${escapeHtml(mappa.titolo||l.titolo)}</div>
+        ${(mappa.nodi||[]).map(n=>renderNode(n,0)).join('')}
+        <button class="btn ghost block" style="margin-top:10px;" onclick="Overlay.close()">Chiudi</button>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  /* ---------------- ESERCIZI ---------------- */
+  esercizi(){
+    const list = Lezioni.list();
+    const attempts = Store.get('esercizi', []);
+    const options = list.map(l=>{
+      const best = attempts.filter(a=>a.lezioneId===l.id).sort((a,b)=>b.score-a.score)[0];
+      return `<div class="card-row" style="padding:8px 0; border-bottom:1px solid var(--line);">
+        <div><b>${escapeHtml(l.titolo)}</b><div class="hint">${escapeHtml(l.materia)}</div></div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          ${best? `<span class="tag ${best.score>=70?'green':best.score>=40?'amber':'red'}">${best.score}%</span>`:''}
+          <button class="btn sm" onclick="Screens.startEsercizi('${l.id}')">Fai esercizi</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="screen">
+      <h1 class="page-title">Esercizi ✏️</h1>
+      <div class="subtitle">5 domande, 1 minuto, +XP a ogni risposta giusta</div>
+      <div class="card">${options || `<p>Prima fai una foto della lezione, poi qui trovi i quiz.</p>
+        <button class="btn big-btn" onclick="App.go('lezioni')">📷 Vai alle Lezioni</button>`}</div>
+    </div>`;
+  },
+
+  async startEsercizi(lezioneId){
+    const l = Lezioni.get(lezioneId);
+    if(!l) return;
+    Overlay.open(`<div class="overlay center"><div class="sheet" style="text-align:center;"><div class="loading-row" style="justify-content:center;"><div class="spinner"></div> Preparo gli esercizi...</div></div></div>`);
+    let data;
+    try{
+      if(!LLM.hasKey()) throw new Error('NO_KEY');
+      data = await LLM.callJSON(
+        [{role:'user', content:`Lezione (${l.materia}): ${l.titolo}\n\n${l.testo}`}],
+        Prompts.esercizi()
+      );
+    }catch(e){ data = Fallback.esercizi(); }
+
+    Screens._quiz = { lezioneId, domande: data.domande, idx:0, risposte:[] };
+    Screens.renderQuizStep();
+  },
+
+  renderQuizStep(){
+    const q = Screens._quiz;
+    const d = q.domande[q.idx];
+    const html = `
+    <div class="overlay" onclick="">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <p class="hint">Domanda ${q.idx+1}/${q.domande.length}</p>
+        <div class="progress-bar" style="margin-bottom:16px;"><div style="width:${(q.idx/q.domande.length)*100}%"></div></div>
+        <div class="sheet-title">${escapeHtml(d.domanda)}</div>
+        <div id="quiz-opts">
+          ${d.opzioni.map((o,i)=>`<button class="quiz-opt" data-i="${i}" onclick="Screens.answerQuiz(${i})">${escapeHtml(o)}</button>`).join('')}
+        </div>
+        <div id="quiz-feedback"></div>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  answerQuiz(i){
+    const q = Screens._quiz;
+    const d = q.domande[q.idx];
+    if(d._answered) return;
+    d._answered = true;
+    q.risposte.push({corretta: i===d.corretta});
+    document.querySelectorAll('.quiz-opt').forEach((btn, idx)=>{
+      btn.classList.add(idx===d.corretta?'correct': idx===i?'wrong':'');
+    });
+    document.getElementById('quiz-feedback').innerHTML = `
+      <div class="banner ${i===d.corretta?'green':'red'}" style="margin-top:14px;">
+        ${i===d.corretta? '✅ Esatto!' : '❌ Non proprio.'} ${escapeHtml(d.spiegazione||'')}
+      </div>
+      <button class="btn block" style="margin-top:10px;" onclick="Screens.nextQuiz()">${q.idx<q.domande.length-1? 'Prossima →' : 'Vedi risultato'}</button>`;
+  },
+
+  nextQuiz(){
+    const q = Screens._quiz;
+    q.idx++;
+    if(q.idx < q.domande.length) Screens.renderQuizStep();
+    else Screens.finishQuiz();
+  },
+
+  finishQuiz(){
+    const q = Screens._quiz;
+    const correct = q.risposte.filter(r=>r.corretta).length;
+    const score = Math.round((correct/q.risposte.length)*100);
+    const color = score>=70?'var(--green)': score>=40?'var(--amber)':'var(--red)';
+    const bg = score>=70?'var(--green-l)': score>=40?'var(--amber-l)':'var(--red-l)';
+
+    const attempts = Store.get('esercizi', []);
+    attempts.push({ id:Store.uid(), lezioneId:q.lezioneId, score, data: nowISO() });
+    Store.set('esercizi', attempts);
+    App.bumpStreak();
+    const xpGain = 20 + (score>=70?10:0);
+    Gamify.add(xpGain);
+
+    const html = `
+    <div class="overlay center">
+      <div class="sheet" style="text-align:center;">
+        <div class="score-ring" style="background:${bg}; color:${color};">${score}%</div>
+        <h3>${score>=70?'Che macchina! 🎉' : score>=40?'Bene, ci siamo quasi 💪':'Ancora un ripasso e la spunti 📖'}</h3>
+        <p class="hint">${correct}/${q.risposte.length} risposte corrette</p>
+        <p style="margin:10px 0 0;"><span class="xp-gain" style="font-size:14px; padding:5px 14px;">+${xpGain} XP</span></p>
+        <button class="btn block" style="margin-top:14px;" onclick="Overlay.close(); App.go('esercizi');">Avanti 💪</button>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  /* ---------------- RICERCA / PROF AGENTICO ---------------- */
+  ricerca(){
+    const convs = Store.get('ricerca', []);
+    const active = Screens._activeRicerca;
+    if(active){
+      const conv = convs.find(c=>c.id===active);
+      if(conv) return Screens.renderChat(conv);
+    }
+    const rows = convs.slice().reverse().map(c=>`
+      <div class="card" onclick="Screens._activeRicerca='${c.id}'; App.refresh();">
+        <h3>${escapeHtml(c.titolo)}</h3>
+        <p>${c.messaggi.length} messaggi ${c.score!=null? `· punteggio domande: ${c.score}%`:''}</p>
+      </div>`).join('');
+
+    return `<div class="screen">
+      <h1 class="page-title">Prof 🎓</h1>
+      <div class="subtitle">Il Prof. Aliseo ti guida: lui non fa il compito, ti fa capire 💡</div>
+      <button class="btn block" style="margin-bottom:16px;" onclick="Screens.newRicerca()">🔎 Nuova ricerca</button>
+      ${rows || `<div class="card empty"><span class="emoji">🔎</span><div class="title">Nessuna ricerca ancora</div><p>Scrivi l'argomento e il Prof ti guida passo a passo</p></div>`}
+    </div>`;
+  },
+
+  newRicerca(){
+    const html = `
+    <div class="overlay" onclick="if(event.target===this) Overlay.close()">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">Nuova ricerca</div>
+        <div class="field"><label>Argomento</label><input id="ric-titolo" placeholder="Es. I vulcani, Il Rinascimento..."></div>
+        <button class="btn block" onclick="Screens.createRicerca()">Inizia</button>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  createRicerca(){
+    const titolo = document.getElementById('ric-titolo').value.trim();
+    if(!titolo){ toast('Scrivi un argomento'); return; }
+    const convs = Store.get('ricerca', []);
+    const conv = { id: Store.uid(), titolo, messaggi:[], score:null, creata: nowISO() };
+    convs.push(conv);
+    Store.set('ricerca', convs);
+    Screens._activeRicerca = conv.id;
+    Overlay.close();
+    App.refresh();
+  },
+
+  renderChat(conv){
+    const msgsHtml = conv.messaggi.map(m=>`<div class="msg ${m.role==='user'?'user':'prof'}">${escapeHtml(m.text)}</div>`).join('');
+    return `<div class="screen">
+      <div class="card-row" style="margin-bottom:10px;">
+        <h1 class="page-title" style="margin:0;">🔎 ${escapeHtml(conv.titolo)}</h1>
+        <button class="btn ghost sm" onclick="Screens._activeRicerca=null; App.refresh();">← Indietro</button>
+      </div>
+      <div class="chat-wrap" id="chatWrap">${msgsHtml || '<p class="hint">Scrivi al Prof. Aliseo per iniziare la ricerca su "'+escapeHtml(conv.titolo)+'"</p>'}</div>
+      <div id="chatLoading"></div>
+      <div class="chat-input-row">
+        <textarea id="chatInput" placeholder="Scrivi un messaggio o una domanda..."></textarea>
+        <button class="btn" onclick="Screens.sendChat()">➤</button>
+      </div>
+      <button class="btn secondary block" style="margin-top:6px;" onclick="Screens.valutaRicerca()">📊 Valuta le mie domande</button>
+    </div>`;
+  },
+
+  async sendChat(){
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if(!text) return;
+    const convs = Store.get('ricerca', []);
+    const conv = convs.find(c=>c.id===Screens._activeRicerca);
+    conv.messaggi.push({role:'user', text});
+    Store.set('ricerca', convs);
+    App.refresh();
+
+    document.getElementById('chatLoading').innerHTML = `<div class="loading-row"><div class="spinner"></div> Il Prof sta scrivendo...</div>`;
+
+    let reply;
+    try{
+      if(!LLM.hasKey()) throw new Error('NO_KEY');
+      const s = Settings.get();
+      const history = conv.messaggi.map(m=>({role: m.role==='user'?'user':'assistant', content:m.text}));
+      reply = await LLM.call(history, Prompts.profSystem(s.nome), {maxTokens:700});
+    }catch(e){
+      reply = LLM.hasKey()
+        ? 'Scusa, non riesco a risponderti ora (problema di connessione). Riprova tra poco! 🙏'
+        : 'Per parlare con me devi prima configurare la chiave API nelle Impostazioni ⚙️';
+    }
+    conv.messaggi.push({role:'prof', text: reply});
+    Store.set('ricerca', convs);
+    Gamify.add(5);
+    document.getElementById('chatLoading').innerHTML = '';
+    App.refresh();
+  },
+
+  async valutaRicerca(){
+    const convs = Store.get('ricerca', []);
+    const conv = convs.find(c=>c.id===Screens._activeRicerca);
+    const domandeStudente = conv.messaggi.filter(m=>m.role==='user').map(m=>m.text).join('\n');
+    if(!domandeStudente){ toast('Scrivi prima qualche domanda al Prof'); return; }
+
+    Overlay.open(`<div class="overlay center"><div class="sheet" style="text-align:center;"><div class="loading-row" style="justify-content:center;"><div class="spinner"></div> Valuto le tue domande...</div></div></div>`);
+    let val;
+    try{
+      if(!LLM.hasKey()) throw new Error('NO_KEY');
+      val = await LLM.callJSON(
+        [{role:'user', content:`Argomento ricerca: ${conv.titolo}\n\nDomande/messaggi dello studente:\n${domandeStudente}`}],
+        Prompts.valutaDomande()
+      );
+    }catch(e){
+      val = {punteggio:0, commento:'Configura la chiave API nelle Impostazioni per ricevere una valutazione reale.', puntiForza:[], daMigliorare:[]};
+    }
+    conv.score = val.punteggio;
+    Store.set('ricerca', convs);
+    App.bumpStreak();
+    Gamify.add(10);
+
+    const color = val.punteggio>=70?'var(--green)': val.punteggio>=40?'var(--amber)':'var(--red)';
+    const bg = val.punteggio>=70?'var(--green-l)': val.punteggio>=40?'var(--amber-l)':'var(--red-l)';
+    const html = `
+    <div class="overlay center">
+      <div class="sheet">
+        <div class="score-ring" style="background:${bg}; color:${color};">${val.punteggio}%</div>
+        <h3 style="text-align:center;">Qualità delle tue domande</h3>
+        <p style="text-align:center;" class="hint">${escapeHtml(val.commento)}</p>
+        ${val.puntiForza&&val.puntiForza.length? `<p><b>Punti di forza:</b></p><ul>${val.puntiForza.map(p=>`<li>${escapeHtml(p)}</li>`).join('')}</ul>`:''}
+        ${val.daMigliorare&&val.daMigliorare.length? `<p><b>Da migliorare:</b></p><ul>${val.daMigliorare.map(p=>`<li>${escapeHtml(p)}</li>`).join('')}</ul>`:''}
+        <button class="btn block" style="margin-top:10px;" onclick="Overlay.close(); App.refresh();">Chiudi</button>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  /* ---------------- AUDIO ---------------- */
+  openAudio(lezioneId){
+    const l = Lezioni.get(lezioneId);
+    const audios = Store.get('audio', []).filter(a=>a.lezioneId===lezioneId);
+    const html = `
+    <div class="overlay" onclick="if(event.target===this && !Screens._recording) Overlay.close()">
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">🎙️ Ripasso vocale — ${escapeHtml(l?l.titolo:'')}</div>
+        <button class="rec-btn" id="recBtn" onclick="Screens.toggleRec('${lezioneId}')">⏺️</button>
+        <p class="hint" id="recStatus" style="text-align:center; margin-top:10px;">Tocca per registrare</p>
+        <div id="audioList" style="margin-top:18px;">
+          ${audios.map(a=>`<div class="audio-item card"><audio controls src="${a.data}"></audio><button class="btn ghost sm" onclick="Screens.delAudio('${a.id}','${lezioneId}')">🗑️</button></div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+    Overlay.open(html);
+  },
+
+  async toggleRec(lezioneId){
+    const btn = document.getElementById('recBtn');
+    const status = document.getElementById('recStatus');
+    if(!Screens._recording){
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+        /* iOS Safari non supporta webm: scegli il mime che il dispositivo sa registrare */
+        const mime = ['audio/webm','audio/mp4','audio/aac'].find(m=> MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
+        const rec = new MediaRecorder(stream, mime? {mimeType:mime} : undefined);
+        const chunks = [];
+        rec.ondataavailable = e=> chunks.push(e.data);
+        rec.onstop = ()=>{
+          const blob = new Blob(chunks, {type: mime || rec.mimeType || 'audio/webm'});
+          const reader = new FileReader();
+          reader.onload = ()=>{
+            const list = Store.get('audio', []);
+            list.push({id:Store.uid(), lezioneId, data:reader.result, creato: nowISO()});
+            Store.set('audio', list);
+            Gamify.add(10);
+            toast('Ripasso salvato <span class="xp-gain">+10 XP</span>');
+            Screens.openAudio(lezioneId);
+          };
+          reader.readAsDataURL(blob);
+          stream.getTracks().forEach(t=>t.stop());
+        };
+        rec.start();
+        Screens._mediaRecorder = rec;
+        Screens._recording = true;
+        btn.classList.add('recording'); btn.textContent='⏹️';
+        status.textContent = 'Registrazione in corso... tocca per fermare';
+      }catch(e){ toast('Microfono non disponibile'); }
+    } else {
+      Screens._mediaRecorder.stop();
+      Screens._recording = false;
+      btn.classList.remove('recording'); btn.textContent='⏺️';
+      status.textContent = 'Salvato ✅';
+    }
+  },
+
+  delAudio(id, lezioneId){
+    Store.set('audio', Store.get('audio', []).filter(a=>a.id!==id));
+    Screens.openAudio(lezioneId);
+  },
+
+  /* ---------------- GENITORI ---------------- */
+  genitori(){
+    if(!Screens._parentUnlocked){
+      return Screens.pinScreen();
+    }
+    const lezioni = Lezioni.list();
+    const fatte = lezioni.filter(l=>l.stato==='completata');
+    const daFare = lezioni.filter(l=>l.stato!=='completata');
+    const esercizi = Store.get('esercizi', []);
+    const ricerche = Store.get('ricerca', []);
+    const avgEsercizi = esercizi.length? Math.round(esercizi.reduce((a,e)=>a+e.score,0)/esercizi.length) : null;
+    const avgRicerca = ricerche.filter(r=>r.score!=null);
+    const avgR = avgRicerca.length? Math.round(avgRicerca.reduce((a,r)=>a+r.score,0)/avgRicerca.length) : null;
+    const streak = Store.get('streak', {count:0});
+    const minutiOggi = Studio.minutiOggi();
+    const lv = Gamify.levelOf(Gamify.total());
+
+    /* grafico ultimi 7 giorni (timer studio) */
+    const giorni7 = Array.from({length:7}).map((_,i)=> addDaysStr(todayStr(), i-6));
+    const perGiornoMin = giorni7.map(g=> Studio.list().filter(s=>s.data===g).reduce((a,s)=>a+s.minuti,0));
+    const maxMin = Math.max(30, ...perGiornoMin);
+    const chart = `<div class="wk-chart">${giorni7.map((g,i)=>{
+      const m = perGiornoMin[i];
+      const h = Math.round((m/maxMin)*100);
+      return `<div class="wk-col">
+        ${m>0? `<span class="wk-min">${m}′</span>`:''}
+        <div class="wk-bar" style="height:${h}%${m===0? ';background:var(--line);box-shadow:none':''}"></div>
+        <span class="wk-lbl ${g===todayStr()?'today':''}">${['D','L','M','M','G','V','S'][new Date(g+'T00:00:00').getDay()]}</span>
+      </div>`;
+    }).join('')}</div>`;
+
+    /* minuti per materia */
+    const perMateria = {};
+    Studio.list().forEach(s=>{
+      const l = Lezioni.get(s.lezioneId);
+      const m = (l && l.materia) ? l.materia : 'Altro';
+      perMateria[m] = (perMateria[m]||0) + s.minuti;
+    });
+    const materieRows = Object.entries(perMateria).sort((a,b)=>b[1]-a[1]).map(([m,min])=>{
+      const pct = Math.round((min/Studio.minutiTotali())*100);
+      return `<div class="card-row" style="padding:6px 0; border-bottom:1px solid var(--line);">
+        <div><b>${escapeHtml(m)}</b><div class="hint">${pct}% del tempo totale</div></div>
+        <span class="tag accent">${min} min</span>
+      </div>`;
+    }).join('');
+
+    return `<div class="screen">
+      <div class="card-row" style="margin-bottom:10px;">
+        <h1 class="page-title" style="margin:0;">👪 Vista Genitori</h1>
+        <div style="display:flex; gap:6px;">
+          <button class="btn ghost sm" onclick="Screens.exportData()" title="Salva un backup di tutti i dati">💾 Esporta</button>
+          <button class="btn ghost sm" onclick="Screens._parentUnlocked=false; App.refresh();">🔒 Blocca</button>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+        <div class="card" style="text-align:center;"><h3>${daFare.length}</h3><p>Da fare</p></div>
+        <div class="card" style="text-align:center;"><h3>${fatte.length}</h3><p>Completate</p></div>
+        <div class="card" style="text-align:center;"><h3>${minutiOggi}</h3><p>Minuti studiati oggi</p></div>
+        <div class="card" style="text-align:center;"><h3>${avgEsercizi!=null?avgEsercizi+'%':'—'}</h3><p>Media esercizi</p></div>
+        <div class="card" style="text-align:center;"><h3>${avgR!=null?avgR+'%':'—'}</h3><p>Media domande ricerca</p></div>
+        <div class="card" style="text-align:center;"><h3>${lv.ic} ${Gamify.total()}</h3><p>XP · livello ${lv.nome}</p></div>
+      </div>
+      <div class="card">
+        <h3>⏱️ Studio negli ultimi 7 giorni</h3>
+        ${Studio.list().length? chart : '<p>Nessuna sessione di studio ancora (si attiva col timer ▶️ "Studia ora").</p>'}
+        <div class="hint">Il tempo è registrato dal timer che Lorenzo avvia con "Studia ora".</div>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <h3>📚 Tempo per materia</h3>
+        ${materieRows || '<p>Nessuna sessione di studio ancora.</p>'}
+      </div>
+      <div class="card" style="margin-top:10px;"><h3>🔥 Streak di studio</h3><p>${streak.count} giorni consecutivi</p></div>
+
+      <div class="section-hdr"><h2>Lezioni da fare</h2></div>
+      <div class="card">
+        ${daFare.length? daFare.map(l=>`<div class="card-row" style="padding:6px 0; border-bottom:1px solid var(--line);"><div><b>${escapeHtml(l.titolo)}</b><div class="hint">${escapeHtml(l.materia)} · ${fmtDate(l.dataLezione)}</div></div><span class="tag amber">Da fare</span></div>`).join('') : '<p>Tutto fatto! 🎉</p>'}
+      </div>
+
+      <div class="section-hdr"><h2>Ultimi esercizi</h2></div>
+      <div class="card">
+        ${esercizi.slice(-5).reverse().map(e=>{
+          const l = Lezioni.get(e.lezioneId);
+          return `<div class="card-row" style="padding:6px 0; border-bottom:1px solid var(--line);"><div>${escapeHtml(l?l.titolo:'Lezione')}</div><span class="tag ${e.score>=70?'green':e.score>=40?'amber':'red'}">${e.score}%</span></div>`;
+        }).join('') || '<p>Nessun esercizio ancora svolto.</p>'}
+      </div>
+
+      <div class="section-hdr"><h2>Ricerche</h2></div>
+      <div class="card">
+        ${ricerche.map(r=>`<div class="card-row" style="padding:6px 0; border-bottom:1px solid var(--line);"><div>${escapeHtml(r.titolo)}</div>${r.score!=null?`<span class="tag accent">${r.score}%</span>`:'<span class="tag grey">in corso</span>'}</div>`).join('') || '<p>Nessuna ricerca ancora.</p>'}
+      </div>
+    </div>`;
+  },
+
+  pinScreen(){
+    Screens._pinInput = Screens._pinInput || '';
+    const pin = Settings.get().parentPin;
+    const dots = Array.from({length: pin.length}).map((_,i)=> `<span class="${i<Screens._pinInput.length?'filled':''}"></span>`).join('');
+    return `<div class="screen" style="padding-top:40px; text-align:center;">
+      <h1 class="page-title">👪 Vista Genitori</h1>
+      <p class="subtitle">Pagina per i genitori (solo lettura): lezioni fatte, media esercizi, tempo di studio.<br>Inserisci il PIN per continuare — predefinito <b>1234</b>.</p>
+      <div class="pin-dots">${dots}</div>
+      <div class="pin-pad">
+        ${[1,2,3,4,5,6,7,8,9].map(n=>`<button onclick="Screens.pinPress('${n}')">${n}</button>`).join('')}
+        <button onclick="Screens.pinBack()">⌫</button>
+        <button onclick="Screens.pinPress('0')">0</button>
+        <div></div>
+      </div>
+      ${Screens._pinError? '<p style="color:var(--red); margin-top:10px; font-weight:700;">PIN errato, riprova</p>' : ''}
+    </div>`;
+  },
+
+  pinPress(d){
+    const pin = Settings.get().parentPin;
+    Screens._pinError = false;
+    Screens._pinInput = (Screens._pinInput||'') + d;
+    if(Screens._pinInput.length === pin.length){
+      if(Screens._pinInput === pin){
+        Screens._parentUnlocked = true;
+        Screens._pinInput = '';
+        App.refresh();
+      } else {
+        Screens._pinError = true;
+        Screens._pinInput = '';
+        App.refresh();
+      }
+    } else {
+      App.refresh();
+    }
+  },
+  pinBack(){ Screens._pinInput = (Screens._pinInput||'').slice(0,-1); App.refresh(); },
+
+  /* backup: scarica tutti i dati in un file JSON */
+  exportData(){
+    try{
+      const data = {
+        app: 'Aliseo', versione: APP_VERSION, esportatoIl: nowISO(),
+        lezioni: Lezioni.list(),
+        studio: Studio.list(),
+        esercizi: Store.get('esercizi', []),
+        ricerca: Store.get('ricerca', []),
+        calendario: Calendario.list(),
+        streak: Store.get('streak', {})
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'aliseo-dati-' + todayStr() + '.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=> URL.revokeObjectURL(a.href), 2000);
+      toast('Backup scaricato 💾');
+    }catch(e){
+      toast('Esportazione non riuscita');
+    }
+  }
+};
+
+window.addEventListener('DOMContentLoaded', App.init);
+</script>
+</body>
+</html>

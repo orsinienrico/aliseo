@@ -1,0 +1,32 @@
+{
+  "name": "Aliseo — Studio con Lorenzo",
+  "short_name": "Aliseo",
+  "description": "Organizzatore di studio personale per Lorenzo: lezioni, mappe, esercizi e Prof agentico",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F7F8FC",
+  "theme_color": "#7C4DFF",
+  "orientation": "portrait",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
